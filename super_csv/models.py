@@ -70,7 +70,8 @@ class CSVOperation(TimeStampedModel):
             original_filename=original_filename,
             user=user,
         )
-        instance.data.save(uuid.uuid4(), ContentFile(data))
+        # EOL: data must be a binary for boto3 to save it correctly
+        instance.data.save(uuid.uuid4(), ContentFile(data.encode()))
         return instance
 
     @classmethod
